@@ -1,0 +1,22 @@
+---
+- name: Create custom config for systemd-resovled
+  when:
+    - systemd_resolved is defined
+    - systemd_resolved != None
+    - systemd_resolved | length > 0
+  block:
+    - name: Create systemd-resolved config directory
+      ansible.builtin.file:
+        path: "/etc/systemd/resolved.conf.d"
+        state: directory
+        mode: "0755"
+        owner: root
+        group: root
+    - name: Create override file for systemd-resolved config
+      ansible.builtin.template:
+        src: resolved.conf.d.j2
+        dest: "/etc/systemd/resolved.conf.d/override.conf"
+        mode: "0644"
+        owner: root
+        group: root
+      notify: Restart systemd-resolved service
