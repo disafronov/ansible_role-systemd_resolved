@@ -1,5 +1,5 @@
 ---
-- name: Create custom config for systemd-resovled
+- name: Create custom config for systemd-resolved
   when:
     - systemd_resolved is defined
     - systemd_resolved != None
